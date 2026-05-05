@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Listening Session 1 - Mike Turner and Molly Smith</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f5f5f7;color:#1d1d1f;}
+.hdr{background:#1a1a2e;padding:14px 16px 10px;}
+.hdr h1{font-size:16px;font-weight:500;color:#fff;margin:0 0 2px;}
+.hdr p{font-size:12px;color:#8888aa;margin:0;}
+.b1{font-size:10px;font-weight:500;background:#E24B4A;color:#fff;padding:2px 8px;border-radius:10px;display:inline-block;margin-bottom:4px;}
+.b2{font-size:10px;font-weight:500;background:#BA7517;color:#fff;padding:2px 8px;border-radius:10px;display:inline-block;margin-bottom:4px;margin-left:6px;}
+.nav{display:flex;background:#fff;border-bottom:1px solid #e5e7eb;}
+.nb{flex:1;padding:10px 4px;font-size:12px;color:#6B7280;border:none;background:transparent;cursor:pointer;border-bottom:2px solid transparent;}
+.nb.on{color:#1d1d1f;font-weight:500;border-bottom:2px solid #E24B4A;}
+.panel{padding:14px 14px 24px;display:none;}
+.panel.on{display:block;}
+.intro{font-size:13px;color:#6B7280;margin:0 0 12px;line-height:1.6;}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;margin-bottom:10px;overflow:hidden;}
+.ch{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;}
+.num{width:26px;height:26px;border-radius:50%;background:#E6F1FB;color:#0C447C;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0;}
+.ct{font-size:14px;font-weight:500;color:#1d1d1f;flex:1;}
+.ctag{font-size:10px;padding:2px 7px;border-radius:10px;flex-shrink:0;}
+.chev{font-size:13px;color:#9CA3AF;display:inline-block;transition:transform 0.2s;}
+.chev.open{transform:rotate(90deg);}
+.cb{padding:4px 14px 14px 52px;display:none;}
+.cb.open{display:block;}
+.scene{font-size:13px;color:#1d1d1f;line-height:1.7;margin-bottom:10px;}
+.pend{display:inline-block;font-size:11px;background:#FEF3C7;color:#92400E;padding:2px 8px;border-radius:10px;margin-top:4px;}
+.sc{background:#fff;border:1px solid #e5e7eb;border-radius:12px;margin-bottom:10px;padding:12px 14px;}
+.sh{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;}
+.sn{font-size:14px;font-weight:500;color:#1d1d1f;}
+.sr{font-size:11px;color:#6B7280;}
+.sa{font-size:12px;color:#6B7280;line-height:1.5;}
+.db{background:#fff;border:1px solid #e5e7eb;border-radius:12px;margin-bottom:14px;overflow:hidden;}
+.dc{background:#f8f8f8;padding:10px 14px;font-size:12px;font-weight:500;color:#6B7280;border-bottom:1px solid #e5e7eb;}
+.dc span{color:#1d1d1f;}
+.dchoices{padding:10px 14px;display:flex;flex-direction:column;gap:8px;}
+.cbtn{padding:10px 14px;font-size:13px;border-radius:10px;border:1px solid #e5e7eb;background:#f8f8f8;color:#1d1d1f;cursor:pointer;text-align:left;line-height:1.5;-webkit-appearance:none;}
+.cbtn.correct{background:#EAF3DE;border:2px solid #639922;color:#27500A;}
+.cbtn.wrong{background:#FCEBEB;border:2px solid #E24B4A;color:#791F1F;}
+.dfb{padding:6px 14px 12px;font-size:12px;line-height:1.5;display:none;}
+.dfb.ok{color:#27500A;}
+.dfb.ko{color:#791F1F;}
+.sbar{background:#f0f0f0;border-radius:10px;padding:10px 14px;margin:4px 14px 14px;font-size:13px;color:#1d1d1f;display:none;}
+.rem{font-size:12px;color:#6B7280;background:#f0f0f0;border-radius:10px;padding:10px 12px;margin-top:12px;line-height:1.7;}
+.rem em{color:#185FA5;font-style:italic;}
+select{width:100%;padding:10px 12px;font-size:14px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;color:#1d1d1f;margin-bottom:10px;font-family:inherit;}
+textarea{width:100%;padding:10px 12px;font-size:13px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;color:#1d1d1f;min-height:80px;resize:vertical;font-family:inherit;margin-bottom:8px;}
+.btn{width:100%;padding:11px;font-size:14px;font-weight:500;border-radius:10px;border:none;background:#1a1a2e;color:#fff;cursor:pointer;margin-top:4px;-webkit-appearance:none;}
+.res{display:none;margin-top:12px;border-radius:10px;padding:12px 14px;}
+.step{background:#f0f0f0;border-radius:10px;padding:12px 14px;margin-bottom:12px;}
+.sl{font-size:11px;font-weight:500;color:#6B7280;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;}
+.st{font-size:13px;color:#1d1d1f;line-height:1.7;}
+.st em{color:#185FA5;font-style:italic;}
+.ex{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 12px;margin-top:8px;font-size:13px;color:#185FA5;font-style:italic;}
+.role-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:14px;margin-bottom:12px;}.role-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;}.role-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0;}.role-name{font-size:14px;font-weight:500;color:#1d1d1f;}.role-org{font-size:12px;color:#6B7280;}</style>
+</head>
+<body>
+<div class="hdr">
+  <span class="badge">Case #2024-11 - Listening Session 1</span>
+  <h1>Mike Turner and Molly Smith</h1>
+  <p>Listen and complete the activities.</p>
+</div>
+<div class="nav">
+  <button class="nb on" onclick="show('mike',this)">Mike Turner</button>
+  <button class="nb" onclick="show('molly',this)">Molly Smith</button>
+  <button class="nb" onclick="show('task',this)">Your task</button>
+</div>
+
+<div id="panel-mike" class="panel on">
+  <p class="intro">Mike Turner works at the parking lot. He found Bernard Smith. Listen to his interview.</p>
+  <div class="sec">A - True, False, or We don&#39;t know?</div>
+
+  <div class="tf-item"><div class="tf-text">Mike Turner was working on the night of December 21st.</div><div class="tf-btns"><button class="tfb" onclick="pickTF('m1','true',this,'true','m1fb','Correct! He was at work all night.','Wrong. Try again.')">True</button><button class="tfb" onclick="pickTF('m1','false',this,'true','m1fb','Wrong.','Correct! He was at work all night.')">False</button><button class="tfb" onclick="pickTF('m1','dk',this,'true','m1fb','Wrong.','Correct! He was at work all night.')">We don&#39;t know</button></div><div class="tf-fb" id="m1fb"></div></div>
+
+  <div class="tf-item"><div class="tf-text">Bernard Smith arrived at the parking lot at midnight.</div><div class="tf-btns"><button class="tfb" onclick="pickTF('m2','true',this,'false','m2fb','Wrong.','Correct! Bernard arrived at 1 AM.')">True</button><button class="tfb" onclick="pickTF('m2','false',this,'false','m2fb','Correct! Bernard arrived at 1 AM.','Wrong.')">False</button><button class="tfb" onclick="pickTF('m2','dk',this,'false','m2fb','Wrong.','Correct! Bernard arrived at 1 AM.')">We don&#39;t know</button></div><div class="tf-fb" id="m2fb"></div></div>
+
+  <div class="tf-item"><div class="tf-text">Mike Turner knows who was in the second car.</div><div class="tf-btns"><button class="tfb" onclick="pickTF('m3','true',this,'false','m3fb','Wrong.','Correct! It was dark. He could not see.')">True</button><button class="tfb" onclick="pickTF('m3','false',this,'false','m3fb','Correct! It was dark. He could not see.','Wrong.')">False</button><button class="tfb" onclick="pickTF('m3','dk',this,'false','m3fb','Wrong.','Correct! It was dark. He could not see.')">We don&#39;t know</button></div><div class="tf-fb" id="m3fb"></div></div>
+
+  <div class="tf-item"><div class="tf-text">The parking lot has a working CCTV camera.</div><div class="tf-btns"><button class="tfb" onclick="pickTF('m4','true',this,'false','m4fb','Wrong.','Correct! There is no camera inside the parking lot.')">True</button><button class="tfb" onclick="pickTF('m4','false',this,'false','m4fb','Correct! There is no camera inside the parking lot.','Wrong.')">False</button><button class="tfb" onclick="pickTF('m4','dk',this,'false','m4fb','Wrong.','Correct! There is no camera inside the parking lot.')">We don&#39;t know</button></div><div class="tf-fb" id="m4fb"></div></div>
+
+  <div class="tf-item"><div class="tf-text">Mike Turner found Bernard Smith at 6 AM.</div><div class="tf-btns"><button class="tfb" onclick="pickTF('m5','true',this,'true','m5fb','Correct! He found him at 6 AM and called the police.','Wrong.')">True</button><button class="tfb" onclick="pickTF('m5','false',this,'true','m5fb','Wrong.','Correct! He found him at 6 AM and called the police.')">False</button><button class="tfb" onclick="pickTF('m5','dk',this,'true','m5fb','Wrong.','Correct! He found him at 6 AM and called the police.')">We don&#39;t know</button></div><div class="tf-fb" id="m5fb"></div></div>
+
+  <div class="sec">B - Multiple choice</div>
+  <p style="font-size:13px;color:#6B7280;margin:0 0 10px;">Listen again. Choose the correct answer.</p>
+
+  <div class="mcq-item"><div class="mcq-q">1. Bernard Smith arrived at the parking lot at...</div><div class="mcq-opts"><button class="mcqb" onclick="pickMCQ(this,0,1)">a) Midnight.</button><button class="mcqb" onclick="pickMCQ(this,1,1)">b) 1:00 AM.</button><button class="mcqb" onclick="pickMCQ(this,2,1)">c) 2:15 AM.</button></div></div>
+
+  <div class="mcq-item"><div class="mcq-q">2. The second car left the parking lot at...</div><div class="mcq-opts"><button class="mcqb" onclick="pickMCQ(this,0,1)">a) 1:00 AM.</button><button class="mcqb" onclick="pickMCQ(this,1,1)">b) 2:00 AM.</button><button class="mcqb" onclick="pickMCQ(this,2,1)">c) 6:00 AM.</button></div></div>
+
+  <div class="mcq-item"><div class="mcq-q">3. Why did Mike Turner not hear anything unusual?</div><div class="mcq-opts"><button class="mcqb" onclick="pickMCQ(this,0,1)">a) He was asleep.</button><button class="mcqb" onclick="pickMCQ(this,1,1)">b) He was listening to the radio.</button><button class="mcqb" onclick="pickMCQ(this,2,1)">c) He was outside his booth.</button></div></div>
+
+  <div class="sec">C - Your deduction</div>
+  <div class="blue">The person in the second car must be / might be...<br>This person cannot be at home at 1 AM.</div>
+  <textarea placeholder="I think... must be / might be... because..."></textarea>
+</div>
+
+<div id="panel-molly" class="panel">
+  <p class="intro">Molly Smith is Bernard&#39;s wife. Listen to her interview.</p>
+  <div class="sec">A - True, False, or We don&#39;t know?</div>
+
+  <div class="tf-item"><div class="tf-text">Molly saw Bernard on the night of December 21st.</div><div class="tf-btns"><button class="tfb" onclick="pickTF('mo1','true',this,'true','mo1fb','Correct. She saw him before he left.','Wrong.')">True</button><button class="tfb" onclick="pickTF('mo1','false',this,'true','mo1fb','Wrong.','Correct. She saw him before he left.')">False</button><button class="tfb" onclick="pickTF('mo1','dk',this,'true','mo1fb','Wrong.','Correct. She saw him before he left.')">We don&#39;t know</button></div><div class="tf-fb" id="mo1fb"></div></div>
+
+  <div class="tf-item"><div class="tf-text">Bernard told Molly where he was going.</div><div class="tf-btns"><button class="tfb" onclick="pickTF('mo2','true',this,'false','mo2fb','Wrong.','Correct. He just said he had some business to take care of.')">True</button><button class="tfb" onclick="pickTF('mo2','false',this,'false','mo2fb','Correct. He just said he had some business to take care of.','Wrong.')">False</button><button class="tfb" onclick="pickTF('mo2','dk',this,'false','mo2fb','Wrong.','Correct. He just said he had some business to take care of.')">We don&#39;t know</button></div><div class="tf-fb" id="mo2fb"></div></div>
+
+  <div class="tf-item"><div class="tf-text">Molly thinks Bernard was cheating on her.</div><div class="tf-btns"><button class="tfb" onclick="pickTF('mo3','true',this,'false','mo3fb','Wrong.','Correct. She says he loved her and the kids too much.')">True</button><button class="tfb" onclick="pickTF('mo3','false',this,'false','mo3fb','Correct. She says he loved her and the kids too much.','Wrong.')">False</button><button class="tfb" onclick="pickTF('mo3','dk',this,'false','mo3fb','Wrong.','Correct. She says he loved her and the kids too much.')">We don&#39;t know</button></div><div class="tf-fb" id="mo3fb"></div></div>
+
+  <div class="tf-item"><div class="tf-text">Bernard seemed worried about something.</div><div class="tf-btns"><button class="tfb" onclick="pickTF('mo4','true',this,'true','mo4fb','Correct. He seemed upset and a bit distant.','Wrong.')">True</button><button class="tfb" onclick="pickTF('mo4','false',this,'true','mo4fb','Wrong.','Correct. He seemed upset and a bit distant.')">False</button><button class="tfb" onclick="pickTF('mo4','dk',this,'true','mo4fb','Wrong.','Correct. He seemed upset and a bit distant.')">We don&#39;t know</button></div><div class="tf-fb" id="mo4fb"></div></div>
+
+  <div class="tf-item"><div class="tf-text">Molly takes medication.</div><div class="tf-btns"><button class="tfb" onclick="pickTF('mo5','true',this,'true','mo5fb','Correct. She mentions her medication during the interview.','Wrong.')">True</button><button class="tfb" onclick="pickTF('mo5','false',this,'true','mo5fb','Wrong.','Correct. She mentions her medication during the interview.')">False</button><button class="tfb" onclick="pickTF('mo5','dk',this,'true','mo5fb','Wrong.','Correct. She mentions her medication during the interview.')">We don&#39;t know</button></div><div class="tf-fb" id="mo5fb"></div></div>
+
+  <div class="sec">B - Fill in the gaps</div>
+  <div class="wb"><div class="wbl">Word bank</div><div class="words">
+    <span class="pill" id="pill-business" onclick="selectPill('business',this,'mo')">business</span>
+    <span class="pill" id="pill-upset" onclick="selectPill('upset',this,'mo')">upset</span>
+    <span class="pill" id="pill-distant" onclick="selectPill('distant',this,'mo')">distant</span>
+    <span class="pill" id="pill-enemies" onclick="selectPill('enemies',this,'mo')">enemies</span>
+    <span class="pill" id="pill-loves" onclick="selectPill('loves',this,'mo')">loves</span>
+  </div></div>
+  <div class="gap-text">
+    <p>Bernard said he had some <span class="blank" id="bl-0" onclick="fillBlank(0,'pill-',gapAnswers)">_______</span> to take care of.</p>
+    <p>He seemed very <span class="blank" id="bl-1" onclick="fillBlank(1,'pill-',gapAnswers)">_______</span>.</p>
+    <p>He has been a bit <span class="blank" id="bl-2" onclick="fillBlank(2,'pill-',gapAnswers)">_______</span> lately.</p>
+    <p>Molly does not think Bernard had any <span class="blank" id="bl-3" onclick="fillBlank(3,'pill-',gapAnswers)">_______</span>.</p>
+    <p>She says he <span class="blank" id="bl-4" onclick="fillBlank(4,'pill-',gapAnswers)">_______</span> her and the kids too much to cheat.</p>
+  </div>
+  <button class="chk" onclick="checkGap(gapAnswers,'gap-score')">Check my answers</button>
+  <div class="score" id="gap-score"></div>
+
+  <div class="sec">C - Your opinion</div>
+  <div class="blue">Does Molly seem suspicious?<br>She must be / might be... because...</div>
+  <textarea placeholder="I think she must be / might be... because..."></textarea>
+
+  <div class="sec">D - Update your verdict</div>
+  <textarea placeholder="After listening to Mike and Molly, I think... must be the attacker because..."></textarea>
+  <div class="rem"><em>must be / may be / might be / cannot be</em> + base verb (present)<br><em>must have been / may have been / might have been</em> + past participle (past)</div>
+</div>
+
+<div id="panel-task" class="panel">
+  <div style="background:#f0f0f0;border-radius:10px;padding:12px 14px;margin-bottom:10px;"><div style="font-size:11px;font-weight:500;color:#6B7280;text-transform:uppercase;margin-bottom:6px;">Step 1</div><div style="font-size:13px;color:#1d1d1f;">Listen carefully. Do not write yet.</div></div>
+  <div style="background:#f0f0f0;border-radius:10px;padding:12px 14px;margin-bottom:10px;"><div style="font-size:11px;font-weight:500;color:#6B7280;text-transform:uppercase;margin-bottom:6px;">Step 2 - True / False</div><div style="font-size:13px;color:#1d1d1f;">Listen again. Answer the questions in each tab.</div></div>
+  <div style="background:#f0f0f0;border-radius:10px;padding:12px 14px;margin-bottom:10px;"><div style="font-size:11px;font-weight:500;color:#6B7280;text-transform:uppercase;margin-bottom:6px;">Step 3 - Fill in (Molly)</div><div style="font-size:13px;color:#1d1d1f;">Use the words in the box to complete the sentences.</div></div>
+  <div style="background:#f0f0f0;border-radius:10px;padding:12px 14px;margin-bottom:10px;"><div style="font-size:11px;font-weight:500;color:#6B7280;text-transform:uppercase;margin-bottom:6px;">Step 4 - Your deduction</div><div style="font-size:13px;color:#1d1d1f;">Write one sentence with <em style="color:#185FA5;">must be / might be</em>.</div></div>
+  <div class="rem"><em>must be / may be / might be / cannot be</em> + base verb (present)<br><em>must have been / may have been / might have been</em> + past participle (past)</div>
+</div>
+
+<script>
+var gapAnswers = ["business","upset","distant","enemies","loves"];
+var selWord = null;
+var filled = {};
+
+function show(id, btn) {
+  var panels = document.querySelectorAll(".panel");
+  for (var i = 0; i < panels.length; i++) { panels[i].classList.remove("on"); }
+  var btns = document.querySelectorAll(".nb");
+  for (var i = 0; i < btns.length; i++) { btns[i].classList.remove("on"); }
+  document.getElementById("panel-" + id).classList.add("on");
+  btn.classList.add("on");
+}
+
+function pickTF(itemId, val, btn, ans, fbId, okMsg, koMsg) {
+  var item = btn.closest(".tf-item");
+  var allBtns = item.querySelectorAll(".tfb");
+  for (var i = 0; i < allBtns.length; i++) { allBtns[i].className = "tfb"; }
+  if (val === "true") { btn.classList.add("t"); }
+  else if (val === "false") { btn.classList.add("f"); }
+  else { btn.classList.add("d"); }
+  var fb = document.getElementById(fbId);
+  fb.style.display = "block";
+  fb.className = "tf-fb " + (val === ans ? "ok" : "ko");
+  fb.textContent = val === ans ? okMsg : koMsg;
+}
+
+function pickMCQ(btn, idx, ans) {
+  var opts = btn.closest(".mcq-opts").querySelectorAll(".mcqb");
+  for (var i = 0; i < opts.length; i++) { opts[i].className = "mcqb"; }
+  btn.classList.add(idx === ans ? "ok" : "ko");
+}
+
+function selectPill(word, el, group) {
+  var pills = document.querySelectorAll(".pill");
+  for (var i = 0; i < pills.length; i++) { pills[i].classList.remove("sel"); }
+  selWord = word;
+  el.classList.add("sel");
+}
+
+function fillBlank(idx, prefix, answers) {
+  if (!selWord) { return; }
+  filled[idx] = selWord;
+  var bl = document.getElementById("bl-" + idx);
+  bl.textContent = selWord;
+  bl.classList.add("filled");
+  bl.classList.remove("wrong");
+  var pills = document.querySelectorAll(".pill");
+  for (var i = 0; i < pills.length; i++) { pills[i].classList.remove("sel"); }
+  selWord = null;
+}
+
+function checkGap(answers, scoreId) {
+  var ok = 0;
+  for (var i = 0; i < answers.length; i++) {
+    var bl = document.getElementById("bl-" + i);
+    if (filled[i] === answers[i]) {
+      bl.classList.add("filled"); bl.classList.remove("wrong"); ok++;
+      var pill = document.getElementById("pill-" + answers[i]);
+      if (pill) { pill.classList.add("used"); }
+    } else {
+      bl.classList.add("wrong"); bl.classList.remove("filled");
+    }
+  }
+  var sc = document.getElementById(scoreId);
+  sc.style.display = "block";
+  sc.textContent = ok === answers.length ? "Perfect! All " + ok + " correct." : ok + " out of " + answers.length + " correct. Try again!";
+}
+</script>
+</body>
+</html>

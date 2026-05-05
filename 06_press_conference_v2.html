@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Press Conference - Bernard Smith</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f5f5f7;color:#1d1d1f;}
+.hdr{background:#1a1a2e;padding:14px 16px 10px;}
+.hdr h1{font-size:16px;font-weight:500;color:#fff;margin:0 0 2px;}
+.hdr p{font-size:12px;color:#8888aa;margin:0;}
+.b1{font-size:10px;font-weight:500;background:#E24B4A;color:#fff;padding:2px 8px;border-radius:10px;display:inline-block;margin-bottom:4px;}
+.b2{font-size:10px;font-weight:500;background:#BA7517;color:#fff;padding:2px 8px;border-radius:10px;display:inline-block;margin-bottom:4px;margin-left:6px;}
+.nav{display:flex;background:#fff;border-bottom:1px solid #e5e7eb;}
+.nb{flex:1;padding:10px 4px;font-size:12px;color:#6B7280;border:none;background:transparent;cursor:pointer;border-bottom:2px solid transparent;}
+.nb.on{color:#1d1d1f;font-weight:500;border-bottom:2px solid #E24B4A;}
+.panel{padding:14px 14px 24px;display:none;}
+.panel.on{display:block;}
+.intro{font-size:13px;color:#6B7280;margin:0 0 12px;line-height:1.6;}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;margin-bottom:10px;overflow:hidden;}
+.ch{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;}
+.num{width:26px;height:26px;border-radius:50%;background:#E6F1FB;color:#0C447C;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0;}
+.ct{font-size:14px;font-weight:500;color:#1d1d1f;flex:1;}
+.ctag{font-size:10px;padding:2px 7px;border-radius:10px;flex-shrink:0;}
+.chev{font-size:13px;color:#9CA3AF;display:inline-block;transition:transform 0.2s;}
+.chev.open{transform:rotate(90deg);}
+.cb{padding:4px 14px 14px 52px;display:none;}
+.cb.open{display:block;}
+.scene{font-size:13px;color:#1d1d1f;line-height:1.7;margin-bottom:10px;}
+.pend{display:inline-block;font-size:11px;background:#FEF3C7;color:#92400E;padding:2px 8px;border-radius:10px;margin-top:4px;}
+.sc{background:#fff;border:1px solid #e5e7eb;border-radius:12px;margin-bottom:10px;padding:12px 14px;}
+.sh{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;}
+.sn{font-size:14px;font-weight:500;color:#1d1d1f;}
+.sr{font-size:11px;color:#6B7280;}
+.sa{font-size:12px;color:#6B7280;line-height:1.5;}
+.db{background:#fff;border:1px solid #e5e7eb;border-radius:12px;margin-bottom:14px;overflow:hidden;}
+.dc{background:#f8f8f8;padding:10px 14px;font-size:12px;font-weight:500;color:#6B7280;border-bottom:1px solid #e5e7eb;}
+.dc span{color:#1d1d1f;}
+.dchoices{padding:10px 14px;display:flex;flex-direction:column;gap:8px;}
+.cbtn{padding:10px 14px;font-size:13px;border-radius:10px;border:1px solid #e5e7eb;background:#f8f8f8;color:#1d1d1f;cursor:pointer;text-align:left;line-height:1.5;-webkit-appearance:none;}
+.cbtn.correct{background:#EAF3DE;border:2px solid #639922;color:#27500A;}
+.cbtn.wrong{background:#FCEBEB;border:2px solid #E24B4A;color:#791F1F;}
+.dfb{padding:6px 14px 12px;font-size:12px;line-height:1.5;display:none;}
+.dfb.ok{color:#27500A;}
+.dfb.ko{color:#791F1F;}
+.sbar{background:#f0f0f0;border-radius:10px;padding:10px 14px;margin:4px 14px 14px;font-size:13px;color:#1d1d1f;display:none;}
+.rem{font-size:12px;color:#6B7280;background:#f0f0f0;border-radius:10px;padding:10px 12px;margin-top:12px;line-height:1.7;}
+.rem em{color:#185FA5;font-style:italic;}
+select{width:100%;padding:10px 12px;font-size:14px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;color:#1d1d1f;margin-bottom:10px;font-family:inherit;}
+textarea{width:100%;padding:10px 12px;font-size:13px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;color:#1d1d1f;min-height:80px;resize:vertical;font-family:inherit;margin-bottom:8px;}
+.btn{width:100%;padding:11px;font-size:14px;font-weight:500;border-radius:10px;border:none;background:#1a1a2e;color:#fff;cursor:pointer;margin-top:4px;-webkit-appearance:none;}
+.res{display:none;margin-top:12px;border-radius:10px;padding:12px 14px;}
+.step{background:#f0f0f0;border-radius:10px;padding:12px 14px;margin-bottom:12px;}
+.sl{font-size:11px;font-weight:500;color:#6B7280;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;}
+.st{font-size:13px;color:#1d1d1f;line-height:1.7;}
+.st em{color:#185FA5;font-style:italic;}
+.ex{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 12px;margin-top:8px;font-size:13px;color:#185FA5;font-style:italic;}
+.line{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start;}.lav{width:32px;height:32px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:#6B7280;flex-shrink:0;border:1px solid #e5e7eb;}.lc{flex:1;}.ln{font-size:11px;color:#6B7280;margin-bottom:3px;}.sp{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:9px 12px;font-size:13px;color:#1d1d1f;line-height:1.6;border-left:3px solid #e5e7eb;}.sp.dm{border-left-color:#185FA5;}.sp.sc{border-left-color:#1D9E75;}.sp.j1{border-left-color:#BA7517;}.sp.j2{border-left-color:#D4537E;}.sp.j3{border-left-color:#534AB7;}.sp.j4{border-left-color:#888780;}.rc{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:14px;margin-bottom:12px;}.rh{display:flex;align-items:center;gap:10px;margin-bottom:12px;}.rav{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0;}.rn{font-size:14px;font-weight:500;color:#1d1d1f;}.ro{font-size:12px;color:#6B7280;}.rsec{font-size:11px;font-weight:500;color:#6B7280;text-transform:uppercase;letter-spacing:0.05em;margin:10px 0 6px;}.rl{background:#f0f0f0;border-radius:8px;padding:8px 12px;font-size:13px;color:#1d1d1f;line-height:1.6;margin-bottom:6px;}.tb{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:12px 14px;margin-bottom:10px;}.tt{font-size:11px;font-weight:500;color:#6B7280;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;}.ti{font-size:13px;color:#185FA5;font-style:italic;line-height:1.8;}.pl{font-size:11px;font-weight:500;color:#6B7280;text-transform:uppercase;letter-spacing:0.05em;margin:16px 0 10px;padding-bottom:6px;border-bottom:1px solid #e5e7eb;}</style>
+</head>
+<body>
+<div class="hdr">
+  <span class="badge">Case #2024-11</span>
+  <h1>Press Conference - Bernard Smith</h1>
+  <p>Boston Police Department - December 22, 2011</p>
+</div>
+<div class="nav">
+  <button class="nb on" onclick="show('script',this)">Full script</button>
+  <button class="nb" onclick="show('mcgee',this)">McGee</button>
+  <button class="nb" onclick="show('cole',this)">Cole</button>
+  <button class="nb" onclick="show('press',this)">Journalists</button>
+  <button class="nb" onclick="show('tips',this)">Tips</button>
+</div>
+
+<div id="panel-script" class="panel on">
+  <p class="intro">Blue = Detective McGee. Green = Deputy Cole.</p>
+  <div class="pl">Part 1 - Opening statement</div>
+  <div class="line"><div class="lav">DM</div><div class="lc"><div class="ln">Detective McGee</div><div class="sp dm">Good morning, everyone. My name is Detective McGee.</div></div></div>
+  <div class="line"><div class="lav">DM</div><div class="lc"><div class="ln">Detective McGee</div><div class="sp dm">I am here today to give you information about a recent case.</div></div></div>
+  <div class="line"><div class="lav">DM</div><div class="lc"><div class="ln">Detective McGee</div><div class="sp dm">On the morning of December 22nd, a man was found unconscious in his car.</div></div></div>
+  <div class="line"><div class="lav">DM</div><div class="lc"><div class="ln">Detective McGee</div><div class="sp dm">The car was parked at the Riverside Parking Lot, Floor Level, in Boston.</div></div></div>
+  <div class="line"><div class="lav">DM</div><div class="lc"><div class="ln">Detective McGee</div><div class="sp dm">The victim is Mr Bernard Smith, a 32-year-old lawyer from Boston.</div></div></div>
+  <div class="line"><div class="lav">DM</div><div class="lc"><div class="ln">Detective McGee</div><div class="sp dm">He was found by a parking lot attendant at 6 AM.</div></div></div>
+  <div class="line"><div class="lav">DM</div><div class="lc"><div class="ln">Detective McGee</div><div class="sp dm">The police arrived at the scene shortly after.</div></div></div>
+  <div class="line"><div class="lav">SC</div><div class="lc"><div class="ln">Deputy Sarah Cole</div><div class="sp sc">Thank you, Detective. My name is Deputy Sarah Cole, Boston Police Department.</div></div></div>
+  <div class="line"><div class="lav">SC</div><div class="lc"><div class="ln">Deputy Sarah Cole</div><div class="sp sc">Mr Smith was pronounced deceased at the crime scene.</div></div></div>
+  <div class="line"><div class="lav">SC</div><div class="lc"><div class="ln">Deputy Sarah Cole</div><div class="sp sc">We are now treating this as a homicide investigation.</div></div></div>
+  <div class="line"><div class="lav">SC</div><div class="lc"><div class="ln">Deputy Sarah Cole</div><div class="sp sc">A number of items were found at the scene. They are currently being examined.</div></div></div>
+  <div class="line"><div class="lav">SC</div><div class="lc"><div class="ln">Deputy Sarah Cole</div><div class="sp sc">The investigation is ongoing. We are working to identify the killer.</div></div></div>
+  <div class="line"><div class="lav">SC</div><div class="lc"><div class="ln">Deputy Sarah Cole</div><div class="sp sc">We will now take a few questions from the press.</div></div></div>
+  <div class="pl">Part 2 - Questions from the press</div>
+  <div class="line"><div class="lav">J1</div><div class="lc"><div class="ln">Journalist 1 - Boston Daily News</div><div class="sp j1">Detective McGee, where exactly was the car parked?</div></div></div>
+  <div class="line"><div class="lav">DM</div><div class="lc"><div class="ln">Detective McGee</div><div class="sp dm">The vehicle was found on the floor level of the Riverside Parking Lot, in downtown Boston. That is all I can confirm at this stage.</div></div></div>
+  <div class="line"><div class="lav">J2</div><div class="lc"><div class="ln">Journalist 2 - Channel 7 News</div><div class="sp j2">Do you have any suspects at this point?</div></div></div>
+  <div class="line"><div class="lav">DM</div><div class="lc"><div class="ln">Detective McGee</div><div class="sp dm">We have a number of people we are speaking to. I am not in a position to name any suspects at this time.</div></div></div>
+  <div class="line"><div class="lav">J3</div><div class="lc"><div class="ln">Journalist 3 - The Boston Herald</div><div class="sp j3">Was there any sign of a struggle? Can you tell us how Mr Smith died?</div></div></div>
+  <div class="line"><div class="lav">SC</div><div class="lc"><div class="ln">Deputy Sarah Cole</div><div class="sp sc">I cannot go into details about the cause of death at this stage. An autopsy has been carried out and the results are being analysed.</div></div></div>
+  <div class="line"><div class="lav">J4</div><div class="lc"><div class="ln">Journalist 4 - Boston Globe</div><div class="sp j4">Is there any CCTV footage from the parking lot?</div></div></div>
+  <div class="line"><div class="lav">SC</div><div class="lc"><div class="ln">Deputy Sarah Cole</div><div class="sp sc">There is no CCTV camera inside the parking lot. However, we are reviewing footage from cameras in the surrounding area.</div></div></div>
+  <div class="line"><div class="lav">DM</div><div class="lc"><div class="ln">Detective McGee</div><div class="sp dm">That is all for today. Thank you for coming. We will keep you informed as the investigation progresses.</div></div></div>
+</div>
+
+<div id="panel-mcgee" class="panel">
+  <div class="rc"><div class="rh"><div class="rav" style="background:#E6F1FB;color:#0C447C;">DM</div><div><div class="rn">Detective McGee</div><div class="ro">Boston Police Department</div></div></div>
+  <div class="rsec">Part 1 - Your lines</div>
+  <div class="rl">Good morning, everyone. My name is Detective McGee.</div>
+  <div class="rl">I am here today to give you information about a recent case.</div>
+  <div class="rl">On the morning of December 22nd, a man was found unconscious in his car.</div>
+  <div class="rl">The car was parked at the Riverside Parking Lot, Floor Level, in Boston.</div>
+  <div class="rl">The victim is Mr Bernard Smith, a 32-year-old lawyer from Boston.</div>
+  <div class="rl">He was found by a parking lot attendant at 6 AM.</div>
+  <div class="rl">The police arrived at the scene shortly after.</div>
+  <div class="rsec">Part 2 - Your answers (J1 and J2)</div>
+  <div class="rl">J1: The vehicle was found on the floor level of the Riverside Parking Lot. That is all I can confirm.</div>
+  <div class="rl">J2: We have a number of people we are speaking to. I am not in a position to name any suspects.</div>
+  <div class="rsec">Closing</div>
+  <div class="rl">That is all for today. Thank you for coming. We will keep you informed.</div></div>
+</div>
+
+<div id="panel-cole" class="panel">
+  <div class="rc"><div class="rh"><div class="rav" style="background:#E1F5EE;color:#085041;">SC</div><div><div class="rn">Deputy Sarah Cole</div><div class="ro">Boston Police Department</div></div></div>
+  <div class="rsec">Part 1 - Your lines</div>
+  <div class="rl">Thank you, Detective. My name is Deputy Sarah Cole, Boston Police Department.</div>
+  <div class="rl">Mr Smith was pronounced deceased at the crime scene.</div>
+  <div class="rl">We are now treating this as a homicide investigation.</div>
+  <div class="rl">A number of items were found at the scene. They are currently being examined.</div>
+  <div class="rl">The investigation is ongoing. We are working to identify the killer.</div>
+  <div class="rl">We will now take a few questions from the press.</div>
+  <div class="rsec">Part 2 - Your answers (J3 and J4)</div>
+  <div class="rl">J3: I cannot go into details about the cause of death. An autopsy has been carried out. Results are being analysed.</div>
+  <div class="rl">J4: There is no CCTV camera inside the parking lot. We are reviewing footage from surrounding cameras.</div></div>
+</div>
+
+<div id="panel-press" class="panel">
+  <div class="rc"><div class="rh"><div class="rav" style="background:#FAEEDA;color:#633806;">J1</div><div><div class="rn">Journalist 1</div><div class="ro">Boston Daily News</div></div></div><div class="rsec">Your question - to Detective McGee</div><div class="rl">Detective McGee, where exactly was the car parked?</div></div>
+  <div class="rc"><div class="rh"><div class="rav" style="background:#FBEAF0;color:#72243E;">J2</div><div><div class="rn">Journalist 2</div><div class="ro">Channel 7 News</div></div></div><div class="rsec">Your question - to Detective McGee</div><div class="rl">Do you have any suspects at this point?</div></div>
+  <div class="rc"><div class="rh"><div class="rav" style="background:#EEEDFE;color:#3C3489;">J3</div><div><div class="rn">Journalist 3</div><div class="ro">The Boston Herald</div></div></div><div class="rsec">Your question - to Deputy Cole</div><div class="rl">Was there any sign of a struggle? Can you tell us how Mr Smith died?</div></div>
+  <div class="rc"><div class="rh"><div class="rav" style="background:#F1EFE8;color:#444441;">J4</div><div><div class="rn">Journalist 4</div><div class="ro">Boston Globe</div></div></div><div class="rsec">Your question - to Deputy Cole</div><div class="rl">Is there any CCTV footage from the parking lot?</div></div>
+</div>
+
+<div id="panel-tips" class="panel">
+  <div class="tb"><div class="tt">Detective McGee + Deputy Cole</div><div class="ti">I am here today to give you information about...<br>The victim is... a ...-year-old... from...<br>We are treating this as a...<br>The investigation is ongoing.<br>I cannot go into details at this stage.<br>I am not in a position to...<br>That is all I can confirm at this time.<br>We will keep you informed.</div></div>
+  <div class="tb"><div class="tt">Journalists</div><div class="ti">Could you tell us...?<br>Do you have any information about...?<br>Is there any...?<br>Was there any sign of...?<br>Can you confirm that...?<br>Thank you, Detective. / Thank you, Deputy.</div></div>
+  <div class="tb"><div class="tt">Remember</div><div class="ti" style="font-style:normal;color:#1d1d1f;">Speak clearly and slowly.<br>Look at the audience, not just your script.<br>Be polite and professional.</div></div>
+</div>
+
+<script>
+function show(id, btn) {
+  var panels = document.querySelectorAll(".panel");
+  for (var i = 0; i < panels.length; i++) { panels[i].classList.remove("on"); }
+  var btns = document.querySelectorAll(".nb");
+  for (var i = 0; i < btns.length; i++) { btns[i].classList.remove("on"); }
+  document.getElementById("panel-" + id).classList.add("on");
+  btn.classList.add("on");
+}
+</script>
+</body>
+</html>
