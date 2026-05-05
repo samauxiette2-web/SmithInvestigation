@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autopsy Report - Bernard Smith</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f5f5f7;color:#1d1d1f;}
+.hdr{background:#1a1a2e;padding:12px 14px 10px;}
+.hdr h1{font-size:15px;font-weight:500;color:#fff;margin:0 0 2px;}
+.hdr p{font-size:11px;color:#8888aa;margin:0;}
+.badge{font-size:10px;font-weight:500;background:#888780;color:#fff;padding:2px 8px;border-radius:10px;display:inline-block;margin-bottom:4px;}
+.nav{display:flex;background:#fff;border-bottom:1px solid #e5e7eb;}
+.nb{flex:1;padding:9px 2px;font-size:11px;color:#6B7280;border:none;background:transparent;cursor:pointer;border-bottom:2px solid transparent;line-height:1.3;text-align:center;}
+.nb.on{color:#1d1d1f;font-weight:500;border-bottom:2px solid #1a1a2e;}
+.panel{padding:12px 12px 24px;display:none;}
+.panel.on{display:block;}
+.intro{font-size:12px;color:#6B7280;margin:0 0 12px;line-height:1.6;}
+.match-col-lbl{font-size:11px;font-weight:500;color:#6B7280;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;text-align:center;}
+.match-term{background:#fff;border:1px solid #d1d5db;border-radius:8px;padding:9px 12px;font-size:13px;font-weight:500;color:#1d1d1f;cursor:pointer;text-align:center;line-height:1.4;}
+.match-term.sel{border:2px solid #185FA5;background:#EFF6FF;color:#0C447C;}
+.match-term.matched{border:2px solid #639922;background:#EAF3DE;color:#27500A;cursor:default;}
+.match-term.wrong-flash{border:2px solid #E24B4A;background:#FCEBEB;}
+.match-def{background:#f0f0f0;border:1px solid #e5e7eb;border-radius:8px;padding:9px 12px;font-size:12px;color:#1d1d1f;cursor:pointer;line-height:1.5;}
+.match-def.sel{border:2px solid #185FA5;background:#EFF6FF;}
+.match-def.matched{border:2px solid #639922;background:#EAF3DE;color:#27500A;cursor:default;}
+.match-def.wrong-flash{border:2px solid #E24B4A;background:#FCEBEB;}
+.score-box{margin-top:10px;background:#f0f0f0;border-radius:10px;padding:10px 14px;font-size:13px;color:#1d1d1f;display:none;}
+.tf-item{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:12px 14px;margin-bottom:8px;}
+.tf-text{font-size:13px;color:#1d1d1f;line-height:1.6;margin-bottom:10px;}
+.tf-btns{display:flex;gap:6px;}
+.tfb{flex:1;padding:7px 4px;font-size:12px;border-radius:8px;border:1px solid #e5e7eb;background:transparent;color:#6B7280;cursor:pointer;}
+.tfb.t{background:#EAF3DE;color:#27500A;border-color:#639922;font-weight:500;}
+.tfb.f{background:#FCEBEB;color:#791F1F;border-color:#E24B4A;font-weight:500;}
+.tfb.d{background:#EFF6FF;color:#0C447C;border-color:#378ADD;font-weight:500;}
+.tf-fb{font-size:12px;margin-top:8px;padding:6px 10px;border-radius:8px;display:none;line-height:1.5;}
+.tf-fb.ok{background:#EAF3DE;color:#27500A;}
+.tf-fb.ko{background:#FCEBEB;color:#791F1F;}
+.wordbank{background:#f0f0f0;border-radius:10px;padding:10px 12px;margin-bottom:14px;}
+.wb-lbl{font-size:11px;font-weight:500;color:#6B7280;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em;}
+.words{display:flex;flex-wrap:wrap;gap:6px;}
+.pill{font-size:12px;padding:4px 10px;border-radius:20px;background:#fff;border:1px solid #e5e7eb;color:#1d1d1f;cursor:pointer;}
+.pill.sel{outline:2px solid #185FA5;}
+.pill.used{opacity:0.35;pointer-events:none;text-decoration:line-through;}
+.gap-text p{font-size:13px;color:#1d1d1f;line-height:2.4;margin:0 0 2px;}
+.blank{display:inline-block;min-width:80px;border-bottom:1.5px solid #9CA3AF;text-align:center;font-weight:500;color:#185FA5;cursor:pointer;padding:0 4px;vertical-align:bottom;font-size:13px;}
+.blank.filled{border-bottom-color:#639922;color:#27500A;}
+.blank.wrong{border-bottom-color:#E24B4A;color:#791F1F;}
+.chk-btn{width:100%;padding:10px;font-size:13px;font-weight:500;border-radius:10px;border:none;background:#1a1a2e;color:#fff;cursor:pointer;margin-top:12px;}
+.score{margin-top:10px;background:#f0f0f0;border-radius:10px;padding:10px 14px;font-size:13px;color:#1d1d1f;display:none;}
+.ded-item{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:12px 14px;margin-bottom:8px;cursor:pointer;display:flex;align-items:flex-start;gap:10px;}
+.ded-item.selected{border:2px solid #185FA5;background:#EFF6FF;}
+.ded-item.correct{border:2px solid #639922;background:#EAF3DE;}
+.ded-item.wrong{border:2px solid #E24B4A;background:#FCEBEB;}
+.ded-check{width:18px;height:18px;border-radius:4px;border:1px solid #e5e7eb;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;}
+.ded-item.selected .ded-check{background:#185FA5;border-color:#185FA5;}
+.ded-item.correct .ded-check{background:#639922;border-color:#639922;}
+.ded-item.wrong .ded-check{background:#E24B4A;border-color:#E24B4A;}
+.ded-text{font-size:13px;color:#1d1d1f;line-height:1.6;flex:1;}
+.ded-fb{font-size:12px;color:#6B7280;margin-top:4px;line-height:1.4;display:none;}
+.ded-item.correct .ded-fb{display:block;color:#27500A;}
+.ded-item.wrong .ded-fb{display:block;color:#791F1F;}
+.submit-ded{width:100%;padding:10px;font-size:13px;font-weight:500;border-radius:10px;border:none;background:#1a1a2e;color:#fff;cursor:pointer;margin-top:4px;}
+.ded-score{margin-top:10px;background:#f0f0f0;border-radius:10px;padding:10px 14px;font-size:13px;color:#1d1d1f;display:none;}
+.rem{font-size:12px;color:#6B7280;background:#f0f0f0;border-radius:10px;padding:10px 12px;margin-top:14px;line-height:1.8;}
+.rem em{color:#185FA5;font-style:italic;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <span class="badge">Autopsy Report - Case #2024-11</span>
+  <h1>The Death of Bernard Smith</h1>
+  <p>Pathologist: Dr Jane Summers | Victim: Bernard Smith</p>
+</div>
+<div class="nav">
+  <button class="nb on" onclick="show('match',this)">Step 1<br>Matching</button>
+  <button class="nb" onclick="show('tf',this)">Step 2<br>True/False</button>
+  <button class="nb" onclick="show('gap',this)">Step 3<br>Fill in</button>
+  <button class="nb" onclick="show('deduct',this)">Step 4<br>Deductions</button>
+</div>
+
+<div id="panel-match" class="panel on">
+  <p class="intro">Match each word from the autopsy report with its meaning. Tap a word, then tap the correct definition.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:6px;">
+    <div class="match-col-lbl">Word</div>
+    <div class="match-col-lbl">Meaning</div>
+  </div>
+  <div id="match-container"></div>
+  <div class="score-box" id="match-score"></div>
+</div>
+
+<div id="panel-tf" class="panel">
+  <p class="intro">Read the autopsy report. Are these sentences true, false, or do we not know?</p>
+  <div id="tf-items"></div>
+</div>
+
+<div id="panel-gap" class="panel">
+  <p class="intro">Help Dr Summers write her report. Tap a word, then tap a blank to fill it in.</p>
+  <div class="wordbank"><div class="wb-lbl">Word bank</div><div class="words" id="wordbank"></div></div>
+  <div class="gap-text" id="report-text"></div>
+  <button class="chk-btn" onclick="checkGap()">Check my answers</button>
+  <div class="score" id="gap-score"></div>
+</div>
+
+<div id="panel-deduct" class="panel">
+  <p class="intro">Tick all the deductions that are possible based on the autopsy report.</p>
+  <div id="ded-list"></div>
+  <button class="submit-ded" onclick="checkDed()">Check my selections</button>
+  <div class="ded-score" id="ded-score"></div>
+  <div class="rem"><em>must be / may be / might be / cannot be</em> + base verb (present)<br><em>must have been / may have been / might have been</em> + past participle (past)</div>
+</div>
+
+<script>
+var matchData=[
+  {term:"asphyxia",def:"death caused by lack of oxygen"},
+  {term:"hyoid bone",def:"a small bone in the neck"},
+  {term:"abrasions",def:"marks left by rubbing or friction on the skin"},
+  {term:"ligature",def:"something used to tie or strangle"},
+  {term:"fingermarks",def:"marks left by fingers on the skin"},
+  {term:"homicide",def:"when a person is killed by another person"},
+  {term:"pathologist",def:"a doctor who studies the cause of death"},
+  {term:"lab results",def:"information from tests done in a laboratory"},
+];
+var tfData=[
+  {q:"Bernard Smith was 32 years old.",a:"true",fb:"Correct! The report says: Age 32."},
+  {q:"The police found drugs in his blood.",a:"false",fb:"False. The lab found no drugs and no alcohol in his blood."},
+  {q:"Bernard Smith could drink alcohol.",a:"false",fb:"False. He had a heart condition - he could not drink alcohol or coffee."},
+  {q:"The killer was very strong.",a:"dk",fb:"We don't know yet. Bernard was taken by surprise - the killer might not need to be very strong."},
+  {q:"There was a big fight before Bernard died.",a:"false",fb:"False. Very little evidence of a fight. Bernard was taken by surprise."},
+  {q:"The police can find the killer's DNA.",a:"dk",fb:"We don't know yet. There is skin under his fingernails - there might be DNA."},
+];
+var gapWords=["neck","alcohol","surprise","homicide","skin","asphyxia","healthy","heart"];
+var gapSentences=[
+  {pre:"Bernard Smith was in good health, but he had a ",blank:"heart",post:" condition."},
+  {pre:"The lab found no drugs and no ",blank:"alcohol",post:" in his blood."},
+  {pre:"There are marks on his ",blank:"neck",post:" from the stocking."},
+  {pre:"There is ",blank:"skin",post:" under his fingernails."},
+  {pre:"Bernard was taken by ",blank:"surprise",post:" - there was very little fight."},
+  {pre:"The probable cause of death is ",blank:"asphyxia",post:"."},
+  {pre:"This case is a ",blank:"homicide",post:"."},
+];
+var dedData=[
+  {text:"The killer must be someone Bernard knew.",correct:true,fb:"Possible. Bernard was taken by surprise - the killer might have been someone he trusted."},
+  {text:"Bernard must have been drunk when he died.",correct:false,fb:"Impossible. No alcohol in his blood. He had a heart condition and could not drink."},
+  {text:"The flask might have belonged to the killer.",correct:true,fb:"Possible. The flask cannot be Bernard's - he could not drink. It might belong to someone else."},
+  {text:"The killer must be a very big and strong person.",correct:false,fb:"Not necessarily. Bernard was taken by surprise. The killer might not be very strong."},
+  {text:"There might be DNA evidence from the killer.",correct:true,fb:"Possible. Skin is under Bernard's fingernails. The police might find DNA."},
+  {text:"Bernard cannot have seen the killer's face.",correct:false,fb:"Not correct. Bernard tried to fight back - he must have been conscious at first."},
+  {text:"The pill found in the car might have belonged to the killer.",correct:true,fb:"Possible. The pill was not in Bernard's blood. It might have fallen from the killer."},
+  {text:"The killer must have been a doctor or a nurse.",correct:false,fb:"Not proven yet. The lab results for the pill are not ready."},
+  {text:"Bernard must have been attacked from behind.",correct:true,fb:"Possible. Very little fight - Bernard might have been taken by surprise from behind."},
+  {text:"The cause of death cannot be the stocking.",correct:false,fb:"False. The cause of death is asphyxia - the stocking must have been used to kill him."},
+];
+var selTerm=null,selDef=null,matchedCount=0,selWord=null,filled={},dedSelected={};
+
+function show(id,btn){document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on');});document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('on');});document.getElementById('panel-'+id).classList.add('on');btn.classList.add('on');}
+
+function buildMatch(){
+  var c=document.getElementById('match-container');
+  var t=[...matchData].sort(function(){return Math.random()-0.5;});
+  var d=[...matchData].sort(function(){return Math.random()-0.5;});
+  for(var i=0;i<matchData.length;i++){
+    var row=document.createElement('div');
+    row.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;';
+    var td=document.createElement('div');td.className='match-term';td.textContent=t[i].term;td.dataset.term=t[i].term;td.onclick=(function(el){return function(){selTerm=el;document.querySelectorAll('.match-term:not(.matched)').forEach(function(e){e.classList.remove('sel');});el.classList.add('sel');tryMatch();};})(td);
+    var dd=document.createElement('div');dd.className='match-def';dd.textContent=d[i].def;dd.dataset.term=d[i].term;dd.onclick=(function(el){return function(){selDef=el;document.querySelectorAll('.match-def:not(.matched)').forEach(function(e){e.classList.remove('sel');});el.classList.add('sel');tryMatch();};})(dd);
+    row.appendChild(td);row.appendChild(dd);c.appendChild(row);
+  }
+}
+function tryMatch(){
+  if(!selTerm||!selDef)return;
+  if(selTerm.dataset.term===selDef.dataset.term){
+    selTerm.classList.remove('sel');selTerm.classList.add('matched');
+    selDef.classList.remove('sel');selDef.classList.add('matched');
+    matchedCount++;selTerm=null;selDef=null;
+    if(matchedCount===matchData.length){var sc=document.getElementById('match-score');sc.style.display='block';sc.textContent='Perfect! All '+matchedCount+' pairs matched correctly.';}
+  }else{
+    selTerm.classList.add('wrong-flash');selDef.classList.add('wrong-flash');
+    setTimeout(function(){if(selTerm){selTerm.classList.remove('wrong-flash','sel');}if(selDef){selDef.classList.remove('wrong-flash','sel');}selTerm=null;selDef=null;},700);
+  }
+}
+function buildTF(){
+  var c=document.getElementById('tf-items');
+  tfData.forEach(function(item,i){
+    var div=document.createElement('div');div.className='tf-item';
+    var fbSafe=item.fb.replace(/'/g,"&#39;");
+    div.innerHTML='<div class="tf-text">'+item.q+'</div><div class="tf-btns"><button class="tfb" onclick="pickTF('+i+',\'true\',this,\''+item.a+'\',\''+fbSafe+'\')">True</button><button class="tfb" onclick="pickTF('+i+',\'false\',this,\''+item.a+'\',\''+fbSafe+'\')">False</button><button class="tfb" onclick="pickTF('+i+',\'dk\',this,\''+item.a+'\',\''+fbSafe+'\')">We don't know</button></div><div class="tf-fb" id="fb'+i+'"></div>';
+    c.appendChild(div);
+  });
+}
+function pickTF(i,val,btn,ans,fb){btn.closest('.tf-item').querySelectorAll('.tfb').forEach(function(b){b.className='tfb';});btn.classList.add(val==='true'?'t':val==='false'?'f':'d');var el=document.getElementById('fb'+i);el.style.display='block';el.className='tf-fb '+(val===ans?'ok':'ko');el.textContent=fb;}
+function buildGap(){
+  var wb=document.getElementById('wordbank');
+  gapWords.forEach(function(w){var s=document.createElement('span');s.className='pill';s.textContent=w;s.id='pill-'+w;s.onclick=function(){document.querySelectorAll('.pill').forEach(function(p){p.classList.remove('sel');});selWord=w;s.classList.add('sel');};wb.appendChild(s);});
+  var rt=document.getElementById('report-text');
+  gapSentences.forEach(function(s,i){var p=document.createElement('p');p.innerHTML=s.pre+'<span class="blank" id="bl-'+i+'" onclick="fillBlank('+i+')">_______</span>'+s.post;rt.appendChild(p);});
+}
+function fillBlank(i){if(!selWord)return;filled[i]=selWord;var bl=document.getElementById('bl-'+i);bl.textContent=selWord;bl.classList.add('filled');bl.classList.remove('wrong');document.querySelectorAll('.pill').forEach(function(p){p.classList.remove('sel');});selWord=null;}
+function checkGap(){var ok=0;gapSentences.forEach(function(s,i){var bl=document.getElementById('bl-'+i);if(filled[i]===s.blank){bl.classList.add('filled');bl.classList.remove('wrong');ok++;var pill=document.getElementById('pill-'+s.blank);if(pill)pill.classList.add('used');}else{bl.classList.add('wrong');bl.classList.remove('filled');}});var sc=document.getElementById('gap-score');sc.style.display='block';sc.textContent=ok===gapSentences.length?'Perfect! All '+ok+' correct.':ok+' out of '+gapSentences.length+' correct. Try the wrong ones again!';}
+function buildDed(){var c=document.getElementById('ded-list');dedData.forEach(function(item,i){var div=document.createElement('div');div.className='ded-item';div.id='ded-'+i;div.onclick=function(){toggleDed(i,div);};div.innerHTML='<div class="ded-check" id="dc-'+i+'"></div><div><div class="ded-text">'+item.text+'</div><div class="ded-fb" id="df-'+i+'">'+item.fb+'</div></div>';c.appendChild(div);});}
+function toggleDed(i,div){if(div.classList.contains('correct')||div.classList.contains('wrong'))return;dedSelected[i]=!dedSelected[i];div.classList.toggle('selected',dedSelected[i]);document.getElementById('dc-'+i).textContent=dedSelected[i]?'x':'';}
+function checkDed(){var cs=0,ws=0,total=dedData.filter(function(d){return d.correct;}).length;dedData.forEach(function(item,i){var div=document.getElementById('ded-'+i),dc=document.getElementById('dc-'+i);div.classList.remove('selected');if(item.correct&&dedSelected[i]){div.classList.add('correct');dc.textContent='x';cs++;}else if(!item.correct&&dedSelected[i]){div.classList.add('wrong');dc.textContent='x';ws++;}else if(item.correct&&!dedSelected[i]){div.classList.add('correct');dc.textContent='';}});var sc=document.getElementById('ded-score');sc.style.display='block';sc.textContent=ws===0&&cs===total?'Perfect! You found all '+total+' possible deductions.':cs+' out of '+total+' correct. '+(ws>0?ws+' incorrect selection(s). Check the feedback below.':'Some correct ones are now shown in green.');}
+buildMatch();buildTF();buildGap();buildDed();
+</script>
+</body>
+</html>

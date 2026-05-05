@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modal Verbs - Probability</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f7;color:#1d1d1f;padding:16px;}
+h1{font-size:20px;font-weight:600;color:#1a1a2e;margin-bottom:4px;}
+.sub{font-size:13px;color:#6B7280;margin-bottom:20px;}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+.modal-card{background:#fff;border:2px solid #e5e7eb;border-radius:12px;padding:14px;cursor:pointer;transition:all 0.2s;}
+.modal-card.active{border-width:2px;}
+.modal-card .tag{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;display:inline-block;margin-bottom:6px;}
+.modal-card .word{font-size:24px;font-weight:600;margin:2px 0 4px;}
+.modal-card .gloss{font-size:12px;color:#6B7280;}
+.must-c .tag{background:#E6F1FB;color:#0C447C;}
+.must-c.active{border-color:#185FA5;}
+.may-c .tag{background:#EAF3DE;color:#27500A;}
+.may-c.active{border-color:#639922;}
+.might-c .tag{background:#FAEEDA;color:#633806;}
+.might-c.active{border-color:#BA7517;}
+.cant-c .tag{background:#FCEBEB;color:#791F1F;}
+.cant-c.active{border-color:#A32D2D;}
+.scale-bar{display:flex;align-items:center;gap:8px;margin-bottom:20px;background:#f0f0f0;border-radius:12px;padding:12px 14px;}
+.scale-track{flex:1;height:8px;border-radius:4px;background:linear-gradient(to right,#F7C1C1,#FAC775,#C0DD97,#B5D4F4);position:relative;}
+.dot{position:absolute;width:14px;height:14px;border-radius:50%;top:-3px;border:2px solid #fff;transition:left 0.3s;box-shadow:0 1px 4px rgba(0,0,0,0.2);}
+.scale-labels{display:flex;justify-content:space-between;font-size:11px;color:#6B7280;margin-top:4px;}
+.tabs{display:flex;gap:6px;margin-bottom:14px;}
+.tab{font-size:13px;padding:6px 14px;border-radius:20px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;color:#6B7280;}
+.tab.active{background:#f0f0f0;color:#1d1d1f;font-weight:500;}
+.struct-box{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:14px;margin-bottom:10px;}
+.struct-formula{font-family:monospace;font-size:14px;margin-bottom:6px;}
+.modal-w{color:#185FA5;font-weight:600;}
+.verb-w{color:#639922;}
+.neg-w{color:#A32D2D;font-weight:600;}
+.struct-examples{font-size:13px;color:#374151;line-height:1.7;}
+.note-box{background:#f8f8f8;border-radius:10px;padding:12px 14px;font-size:13px;color:#6B7280;line-height:1.5;}
+.hidden{display:none;}
+</style>
+</head>
+<body>
+<h1>Modal verbs — Probability</h1>
+<p class="sub">must / may / might / can't — present and past</p>
+
+<div class="modal-grid">
+  <div class="modal-card must-c active" onclick="setModal('must')">
+    <div class="tag">100% certain</div>
+    <div class="word">must</div>
+    <div class="gloss">It is definitely true</div>
+  </div>
+  <div class="modal-card may-c" onclick="setModal('may')">
+    <div class="tag">50–70%</div>
+    <div class="word">may</div>
+    <div class="gloss">It is perhaps true</div>
+  </div>
+  <div class="modal-card might-c" onclick="setModal('might')">
+    <div class="tag">20–50%</div>
+    <div class="word">might</div>
+    <div class="gloss">It is possible but not sure</div>
+  </div>
+  <div class="modal-card cant-c" onclick="setModal('cant')">
+    <div class="tag">0% — impossible</div>
+    <div class="word">can't</div>
+    <div class="gloss">It is impossible</div>
+  </div>
+</div>
+
+<div class="scale-bar">
+  <span style="font-size:12px;color:#6B7280;">impossible</span>
+  <div style="flex:1;">
+    <div class="scale-track" id="scaleTrack">
+      <div class="dot" id="dot" style="left:88%;background:#185FA5;"></div>
+    </div>
+    <div class="scale-labels"><span>can't</span><span>might</span><span>may</span><span>must</span></div>
+  </div>
+  <span style="font-size:12px;color:#6B7280;">certain</span>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="setTense('present',this)">Present</button>
+  <button class="tab" onclick="setTense('past',this)">Past</button>
+</div>
+
+<div id="content-present">
+  <div class="struct-box">
+    <div class="struct-formula">Subject + <span class="modal-w" id="modal-word-p">must</span> + <span class="verb-w">base verb</span></div>
+    <div class="struct-examples" id="examples-present"></div>
+  </div>
+  <div class="note-box" id="neg-present"></div>
+</div>
+<div id="content-past" class="hidden">
+  <div class="struct-box">
+    <div class="struct-formula">Subject + <span class="modal-w" id="modal-word-pa">must</span> + <span class="verb-w">have + past participle</span></div>
+    <div class="struct-examples" id="examples-past"></div>
+  </div>
+  <div class="note-box" id="neg-past"></div>
+</div>
+
+<script>
+var data={
+  must:{color:'#185FA5',dotPos:'88%',
+    present:{examples:['<em>The suspect must be the killer</em> — look at the evidence.','<em>She must know something</em> — she was there.'],neg:'For the negative, we prefer <em>can\'t</em>: <em>He can\'t be innocent.</em>'},
+    past:{examples:['<em>He must have been at the parking lot</em> — we found his fingerprints.','<em>She must have left before midnight.</em>'],neg:'For the negative in the past, we prefer <em>can\'t have</em>: <em>He can\'t have been there.</em>'}},
+  may:{color:'#639922',dotPos:'70%',
+    present:{examples:['<em>The killer may be someone from the hospital.</em>','<em>She may have an alibi — we need to check.</em>'],neg:'<em>She may not be telling the truth.</em>'},
+    past:{examples:['<em>He may have seen the killer</em> — he was near the car.','<em>They may have left a clue at the scene.</em>'],neg:'<em>She may not have known about the plan.</em>'}},
+  might:{color:'#BA7517',dotPos:'35%',
+    present:{examples:['<em>The flask might belong to the killer.</em>','<em>There might be a secret passage.</em>'],neg:'<em>He might not be guilty</em> — we do not have enough evidence.'},
+    past:{examples:['<em>She might have hidden the pill in her pocket.</em>','<em>They might have worked together.</em>'],neg:'<em>He might not have acted alone.</em>'}},
+  cant:{color:'#A32D2D',dotPos:'5%',
+    present:{examples:['<em>He can\'t be the killer</em> — he was in London!','<em>This can\'t be the murder weapon</em> — it is too small.'],neg:'(can\'t is already negative)'},
+    past:{examples:['<em>She can\'t have done it</em> — she was with us all evening.','<em>He can\'t have escaped through the window</em> — it was locked.'],neg:'(can\'t have + past participle is the negative past form)'}}
+};
+var currentModal='must', currentTense='present';
+function update(){
+  var d=data[currentModal];
+  document.getElementById('dot').style.left=d.dotPos;
+  document.getElementById('dot').style.background=d.color;
+  var mw=currentModal==='cant'?"can't":currentModal;
+  document.getElementById('modal-word-p').textContent=mw;
+  document.getElementById('modal-word-pa').textContent=mw;
+  document.getElementById('examples-present').innerHTML=d.present.examples.map(function(e){return '<div style="margin-bottom:4px;">'+e+'</div>';}).join('');
+  document.getElementById('neg-present').innerHTML=d.present.neg;
+  document.getElementById('examples-past').innerHTML=d.past.examples.map(function(e){return '<div style="margin-bottom:4px;">'+e+'</div>';}).join('');
+  document.getElementById('neg-past').innerHTML=d.past.neg;
+}
+function setModal(m){
+  currentModal=m;
+  document.querySelectorAll('.modal-card').forEach(function(c){c.classList.remove('active');});
+  document.querySelector('.'+m+'-c').classList.add('active');
+  update();
+}
+function setTense(t,btn){
+  currentTense=t;
+  document.querySelectorAll('.tab').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  document.getElementById('content-present').classList.toggle('hidden',t!=='present');
+  document.getElementById('content-past').classList.toggle('hidden',t!=='past');
+}
+update();
+</script>
+</body>
+</html>

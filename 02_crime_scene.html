@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crime Scene - Bernard Smith</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f5f5f7;color:#1d1d1f;}
+.hdr{background:#1a1a2e;padding:14px 16px 10px;}
+.hdr h1{font-size:16px;font-weight:500;color:#fff;margin:0 0 2px;}
+.hdr p{font-size:12px;color:#8888aa;margin:0;}
+.b1{font-size:10px;font-weight:500;background:#E24B4A;color:#fff;padding:2px 8px;border-radius:10px;display:inline-block;margin-bottom:4px;}
+.b2{font-size:10px;font-weight:500;background:#BA7517;color:#fff;padding:2px 8px;border-radius:10px;display:inline-block;margin-bottom:4px;margin-left:6px;}
+.nav{display:flex;background:#fff;border-bottom:1px solid #e5e7eb;}
+.nb{flex:1;padding:10px 4px;font-size:12px;color:#6B7280;border:none;background:transparent;cursor:pointer;border-bottom:2px solid transparent;}
+.nb.on{color:#1d1d1f;font-weight:500;border-bottom:2px solid #E24B4A;}
+.panel{padding:14px 14px 24px;display:none;}
+.panel.on{display:block;}
+.intro{font-size:13px;color:#6B7280;margin:0 0 12px;line-height:1.6;}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;margin-bottom:10px;overflow:hidden;}
+.card-head{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;}
+.num{width:26px;height:26px;border-radius:50%;background:#E6F1FB;color:#0C447C;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0;}
+.card-title{font-size:14px;font-weight:500;color:#1d1d1f;flex:1;}
+.ctag{font-size:10px;padding:2px 7px;border-radius:10px;flex-shrink:0;}
+.chev{font-size:13px;color:#9CA3AF;display:inline-block;transition:transform 0.2s;}
+.chev.open{transform:rotate(90deg);}
+.card-body{padding:4px 14px 14px 52px;display:none;}
+.card-body.open{display:block;}
+.scene{font-size:13px;color:#1d1d1f;line-height:1.7;margin-bottom:10px;}
+.pending{display:inline-block;font-size:11px;background:#FEF3C7;color:#92400E;padding:2px 8px;border-radius:10px;margin-top:4px;}
+.sc{background:#fff;border:1px solid #e5e7eb;border-radius:12px;margin-bottom:10px;padding:12px 14px;}
+.sh{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;}
+.sn{font-size:14px;font-weight:500;color:#1d1d1f;}
+.sr{font-size:11px;color:#6B7280;}
+.sa{font-size:12px;color:#6B7280;line-height:1.5;}
+.ded-block{background:#fff;border:1px solid #e5e7eb;border-radius:12px;margin-bottom:14px;overflow:hidden;}
+.ded-clue{background:#f8f8f8;padding:10px 14px;font-size:12px;font-weight:500;color:#6B7280;border-bottom:1px solid #e5e7eb;}
+.ded-clue span{color:#1d1d1f;}
+.ded-choices{padding:10px 14px;display:flex;flex-direction:column;gap:8px;}
+.choice-btn{padding:10px 14px;font-size:13px;border-radius:10px;border:1px solid #e5e7eb;background:#f8f8f8;color:#1d1d1f;cursor:pointer;text-align:left;line-height:1.5;}
+.choice-btn.correct{background:#EAF3DE;border:2px solid #639922;color:#27500A;}
+.choice-btn.wrong{background:#FCEBEB;border:2px solid #E24B4A;color:#791F1F;}
+.score-bar{background:#f0f0f0;border-radius:10px;padding:12px 14px;margin-top:4px;font-size:13px;color:#1d1d1f;display:none;}
+.rem{font-size:12px;color:#6B7280;background:#f0f0f0;border-radius:10px;padding:10px 12px;margin-top:12px;line-height:1.7;}
+.rem em{color:#185FA5;font-style:italic;}
+select,textarea{width:100%;padding:10px 12px;font-size:14px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;color:#1d1d1f;margin-bottom:10px;font-family:inherit;}
+textarea{min-height:80px;resize:vertical;font-size:13px;}
+.btn{width:100%;padding:11px;font-size:14px;font-weight:500;border-radius:10px;border:none;background:#1a1a2e;color:#fff;cursor:pointer;margin-top:4px;}
+.res{display:none;margin-top:12px;border-radius:10px;padding:12px 14px;background:#EAF3DE;}
+.res-t{font-size:13px;font-weight:500;color:#1d1d1f;margin-bottom:4px;}
+.res-x{font-size:13px;color:#1d1d1f;line-height:1.6;margin:0;}
+.step{background:#f0f0f0;border-radius:10px;padding:12px 14px;margin-bottom:10px;}
+.sl{font-size:11px;font-weight:500;color:#6B7280;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;}
+.st{font-size:13px;color:#1d1d1f;line-height:1.7;}
+.st em{color:#185FA5;font-style:italic;}
+.ex{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 12px;margin-top:8px;font-size:13px;color:#185FA5;font-style:italic;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div><span class="b1">Case #2024-11</span><span class="b2">Investigation open</span></div>
+  <h1>The Death of Bernard Smith</h1>
+  <p>Riverside Parking Lot, Floor Level - First observations</p>
+</div>
+<div class="nav">
+  <button class="nb on" onclick="show('clues',this)">Clues</button>
+  <button class="nb" onclick="show('suspects',this)">Suspects</button>
+  <button class="nb" onclick="show('task',this)">Deductions</button>
+  <button class="nb" onclick="show('verdict',this)">Verdict</button>
+</div>
+
+<div id="panel-clues" class="panel on">
+  <p class="intro">These are the first observations at the crime scene. Tap each clue to read it.</p>
+  <div class="card"><div class="card-head" onclick="tog(1)"><div class="num">1</div><span class="card-title">A flask on the ground</span><span class="ctag" style="background:#FEF3C7;color:#92400E;">evidence</span><span class="chev" id="c1">&#8250;</span></div><div class="card-body" id="b1"><div class="scene">A small metal flask is on the ground, near the car door. It smells of alcohol. The police found fingerprints on it.<br><span class="pending">Results: not ready yet</span></div></div></div>
+  <div class="card"><div class="card-head" onclick="tog(2)"><div class="num">2</div><span class="card-title">A stocking around his neck</span><span class="ctag" style="background:#FEE2E2;color:#C0392B;">critical</span><span class="chev" id="c2">&#8250;</span></div><div class="card-body" id="b2"><div class="scene">A stocking is around Bernard Smith's neck. There are marks on his skin. A doctor is looking at them.<br><span class="pending">Medical report: not ready yet</span></div></div></div>
+  <div class="card"><div class="card-head" onclick="tog(3)"><div class="num">3</div><span class="card-title">A pill on the floor</span><span class="ctag" style="background:#FEE2E2;color:#C0392B;">critical</span><span class="chev" id="c3">&#8250;</span></div><div class="card-body" id="b3"><div class="scene">A small white pill is under the seat. The police sent it to a lab.<br><span class="pending">Lab results: not ready yet</span></div></div></div>
+  <div class="card"><div class="card-head" onclick="tog(4)"><div class="num">4</div><span class="card-title">A document on the dashboard</span><span class="ctag" style="background:#FEF3C7;color:#92400E;">evidence</span><span class="chev" id="c4">&#8250;</span></div><div class="card-body" id="b4"><div class="scene">A printed document is open on the dashboard. One name is hidden with black ink. You can read:<br><strong>"professional misconduct" - "terrible mistakes" - "safety".</strong></div></div></div>
+  <div class="card"><div class="card-head" onclick="tog(5)"><div class="num">5</div><span class="card-title">A street camera - 1:00 AM</span><span class="ctag" style="background:#FEF3C7;color:#92400E;">evidence</span><span class="chev" id="c5">&#8250;</span></div><div class="card-body" id="b5"><div class="scene">There is no camera inside the parking lot. But a street camera shows a dark car at 1:00 AM. The image is not very clear.</div></div></div>
+  <div class="card"><div class="card-head" onclick="tog(6)"><div class="num">6</div><span class="card-title">Mike Turner - statement</span><span class="ctag" style="background:#D1FAE5;color:#065F46;">witness</span><span class="chev" id="c6">&#8250;</span></div><div class="card-body" id="b6"><div class="scene">"I found Mr Smith at 6 AM and I called the police. But at 1 AM, I saw a second car arrive near his car. Someone got out. It was dark. The car left about one hour later."</div></div></div>
+</div>
+
+<div id="panel-suspects" class="panel">
+  <p class="intro">Five people are under investigation.</p>
+  <div class="sc"><div class="sh"><div class="av" style="background:#EEEDFE;color:#3C3489;">MS</div><div><div class="sn">Molly Smith</div><div class="sr">Bernard Smith - wife</div></div></div><div class="sa">"I was at home. I did not know he was there." - No alibi confirmed.</div></div>
+  <div class="sc"><div class="sh"><div class="av" style="background:#FAEEDA;color:#633806;">FC</div><div><div class="sn">Frederick Cole</div><div class="sr">Business partner - lawyer</div></div></div><div class="sa">"Bernard and I had a problem with money. But I did not hurt him."</div></div>
+  <div class="sc"><div class="sh"><div class="av" style="background:#FBEAF0;color:#72243E;">PR</div><div><div class="sn">Patrick Reeves</div><div class="sr">A colleague</div></div></div><div class="sa">"I knew Bernard very well. I am very sad." - No alibi.</div></div>
+  <div class="sc"><div class="sh"><div class="av" style="background:#E1F5EE;color:#085041;">MT</div><div><div class="sn">Mike Turner</div><div class="sr">Parking lot attendant</div></div></div><div class="sa">"I found Mr Smith at 6 AM. I called the police." - At work all night.</div></div>
+  <div class="sc"><div class="sh"><div class="av" style="background:#E6F1FB;color:#0C447C;">KH</div><div><div class="sn">Katelyn Hunt</div><div class="sr">Surgeon</div></div></div><div class="sa">"I was not in that parking lot." - She has a dark car. She knows James Smith, the victim's brother.</div></div>
+</div>
+
+<div id="panel-task" class="panel">
+  <p class="intro">For each clue, choose the best deduction. Only one answer is correct.</p>
+  <div class="ded-block"><div class="ded-clue">Clue 1 - <span>A flask on the ground</span></div><div class="ded-choices"><button class="choice-btn" onclick="pick(this,0,false)">The flask must be Bernard's - he was drinking that night.</button><button class="choice-btn" onclick="pick(this,0,true)">The flask might belong to the killer.</button></div><div class="score-bar" id="fb0"></div></div>
+  <div class="ded-block"><div class="ded-clue">Clue 2 - <span>A stocking around his neck</span></div><div class="ded-choices"><button class="choice-btn" onclick="pick(this,1,true)">Someone must have attacked Bernard Smith.</button><button class="choice-btn" onclick="pick(this,1,false)">The stocking might be Bernard's - he put it there himself.</button></div><div class="score-bar" id="fb1"></div></div>
+  <div class="ded-block"><div class="ded-clue">Clue 3 - <span>A pill on the floor</span></div><div class="ded-choices"><button class="choice-btn" onclick="pick(this,2,false)">The killer must be a doctor - only a doctor has pills.</button><button class="choice-btn" onclick="pick(this,2,true)">The pill might have fallen from the killer's pocket.</button></div><div class="score-bar" id="fb2"></div></div>
+  <div class="ded-block"><div class="ded-clue">Clue 4 - <span>A document on the dashboard</span></div><div class="ded-choices"><button class="choice-btn" onclick="pick(this,3,true)">Bernard might be about to report someone.</button><button class="choice-btn" onclick="pick(this,3,false)">The hidden person must be the killer.</button></div><div class="score-bar" id="fb3"></div></div>
+  <div class="ded-block"><div class="ded-clue">Clue 5 - <span>A street camera</span></div><div class="ded-choices"><button class="choice-btn" onclick="pick(this,4,false)">The driver of the dark car must be the killer.</button><button class="choice-btn" onclick="pick(this,4,true)">The driver of the dark car might be the killer.</button></div><div class="score-bar" id="fb4"></div></div>
+  <div class="ded-block"><div class="ded-clue">Clue 6 - <span>Mike Turner - statement</span></div><div class="ded-choices"><button class="choice-btn" onclick="pick(this,5,false)">Mike Turner must be the killer - he was at the parking lot all night.</button><button class="choice-btn" onclick="pick(this,5,true)">The person in the second car cannot be a stranger.</button></div><div class="score-bar" id="fb5"></div></div>
+  <div class="score-bar" id="total-score"></div>
+  <div class="rem"><em>must be / may be / might be / cannot be</em> + base verb (present)<br><em>must have been / may have been / might have been</em> + past participle (past)</div>
+</div>
+
+<div id="panel-verdict" class="panel">
+  <div class="step"><div class="sl">Your first verdict</div><div class="st">This is only your first idea - the investigation is not finished yet!</div></div>
+  <select id="pick-s"><option value="">- Choose a suspect -</option><option value="molly">Molly Smith</option><option value="frederick">Frederick Cole</option><option value="patrick">Patrick Reeves</option><option value="mike">Mike Turner</option><option value="katelyn">Katelyn Hunt</option></select>
+  <textarea id="reason" placeholder="I think ... must be / might be the attacker because ..."></textarea>
+  <button class="btn" onclick="checkVerdict()">Submit my first verdict</button>
+  <div class="res" id="res"><div class="res-t" id="res-t"></div><p class="res-x" id="res-x"></p></div>
+</div>
+
+<script>
+var feedbacks=["Too strong. The lab results are not ready. We cannot be sure the flask belongs to Bernard.","Not possible. The stocking was used to attack Bernard.","Too strong. The lab results are not ready. We cannot say the killer must be a doctor yet.","Too strong. We do not have enough information yet.","Too strong. We do not know for certain. The driver might be the killer.","Not correct. Mike Turner found the body and called the police."];
+var feedbacksOk=["Correct. We do not know who the flask belongs to. It might be the killer.","Correct. The marks and the stocking show that Bernard was attacked.","Correct. We do not know what the pill is yet. It might have fallen from the killer.","Correct. Bernard might be about to report someone.","Correct. We do not know for certain. The driver might be the killer.","Correct. The second car arrived at 1 AM. This person cannot be a stranger."];
+var answers={},score=0,total=6;
+function show(id,btn){document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on');});document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('on');});document.getElementById('panel-'+id).classList.add('on');btn.classList.add('on');}
+function tog(n){var b=document.getElementById('b'+n),c=document.getElementById('c'+n),open=b.classList.contains('open');b.classList.toggle('open',!open);c.classList.toggle('open',!open);}
+function pick(btn,idx,isCorrect){if(answers[idx]!==undefined)return;answers[idx]=isCorrect;var block=btn.closest('.ded-block');block.querySelectorAll('.choice-btn').forEach(function(b){b.style.pointerEvents='none';});btn.classList.add(isCorrect?'correct':'wrong');var fb=document.getElementById('fb'+idx);fb.style.display='block';fb.textContent=isCorrect?feedbacksOk[idx]:feedbacks[idx];if(isCorrect)score++;if(Object.keys(answers).length===total){var sb=document.getElementById('total-score');sb.style.display='block';sb.textContent=score===total?'Perfect! All 6 correct.':score+' out of '+total+' correct. Read the feedback to understand the differences.';}}
+function checkVerdict(){var p=document.getElementById('pick-s').value,r=document.getElementById('res'),t=document.getElementById('res-t'),x=document.getElementById('res-x');r.style.display='block';if(!p){r.style.background='#f0f0f0';t.textContent='Please choose a suspect first.';x.textContent='';return;}r.style.background='#EAF3DE';t.textContent='Good - but the investigation is not finished!';x.textContent='We do not know everything yet. Lab results are pending. Witnesses have not been interviewed. Your verdict might change!';}
+</script>
+</body>
+</html>
